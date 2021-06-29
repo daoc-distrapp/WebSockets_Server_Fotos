@@ -15,3 +15,6 @@ Servidor WebSockets
     - mvn clean package
     - cd target
     - java -jar fotos_ws-0.0.1-SNAPSHOT.jar
+
+### Cliente de prueba
+Utilice: https://github.com/dordonez-ute-apdist/WebSockets_Client_Fotos
