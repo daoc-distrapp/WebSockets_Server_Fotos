@@ -61,10 +61,13 @@ public class Foto {
 	public void setFotoB64(String fotoB64) {
 		this.fotoB64 = fotoB64;
 	}
-	
 	@Override
 	public String toString() {
-		return "Foto [id=" + id + ", titulo=" + titulo + "]";
+		return "Foto [id=" + id + ", titulo=" + titulo + ", descripcion=" + descripcion 
+				+ ", latitud=" + latitud + ", longitud=" + longitud + ", timestamp=" + timestamp 
+				+ ", fotoB64=" + (fotoB64.length() < 20 ? fotoB64 : fotoB64.substring(0, 19)+"...") + "]";
 	}
+	
+
 	
 }

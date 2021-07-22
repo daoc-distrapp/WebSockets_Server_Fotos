@@ -20,7 +20,7 @@ public class FotosWsHandler extends TextWebSocketHandler {
 	
 	@Override
 	public void afterConnectionEstablished(WebSocketSession session) throws Exception {
-		session.setTextMessageSizeLimit(5 * 1024 * 1024);//5 megas (si no, el tamaño máximo es 8192)
+		session.setTextMessageSizeLimit(5 * 1024 * 1024);//5 megas (si no, el tamaño máximo es 8192 bytes)
 		System.out.println("Conectado: " + session.toString());
 	}
 	
@@ -31,33 +31,34 @@ public class FotosWsHandler extends TextWebSocketHandler {
 	
 	/**
 	 * @param message
-	 * el payload es un objeto JSON, con dos campos: tipo y contenido
-	 * el contenido dependerá del tipo, pero generalmente será un objeto Foto
+	 * el payload es un objeto JSON, que contiene un objeto FotoMessage
 	 */
 	@Override
 	protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
 		ObjectMapper objMap = new ObjectMapper();
 		ObjectWriter obj2json = new ObjectMapper().writer().withDefaultPrettyPrinter();
-		WsMessage wsMsg = objMap.readValue(message.getPayload(), WsMessage.class);
-		switch (wsMsg.getType()) {
+		FotoMessage fotoMsg = objMap.readValue(message.getPayload(), FotoMessage.class);
+		switch (fotoMsg.getType()) {
 		case "SAVE":
-			fotoRepository.save(wsMsg.getFoto());
+			fotoRepository.save(fotoMsg.getFoto());
+//			//Con este código puede bajar la foto a un archivo
 //			byte[] decodedBytes = Base64.getDecoder().decode(foto.getFotoB64());
 //			Path path = Paths.get("C:\\Users\\ordon\\Downloads\\myfile.jpg");
 //			Files.write(path, decodedBytes);
 			break;
 		case "GETLIST":
 			List<Object[]> lista = fotoRepository.getList();
-			wsMsg.setListado(obj2json.writeValueAsString(lista));
-			session.sendMessage(new TextMessage(obj2json.writeValueAsString(wsMsg)));
+			fotoMsg.setListado(obj2json.writeValueAsString(lista));
+			session.sendMessage(new TextMessage(obj2json.writeValueAsString(fotoMsg)));
 			break;
 		case "GETBYID":
-			Foto foto = fotoRepository.findById(Long.parseLong(wsMsg.getDesc())).orElse(null);
-			wsMsg.setFoto(foto);
-			session.sendMessage(new TextMessage(obj2json.writeValueAsString(wsMsg)));
+			Foto foto = fotoRepository.findById(Long.parseLong(fotoMsg.getDesc())).orElse(null);
+			fotoMsg.setFoto(foto);
+			session.sendMessage(new TextMessage(obj2json.writeValueAsString(fotoMsg)));
 			break;
 		case "DELETE":
-			
+			// TODO
+			System.out.println("TODO");
 			break;			
 		default:
 			System.out.println("Caso indefinido !");

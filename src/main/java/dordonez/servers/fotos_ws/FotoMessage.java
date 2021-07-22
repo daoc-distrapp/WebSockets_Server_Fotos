@@ -1,6 +1,6 @@
 package dordonez.servers.fotos_ws;
 
-public class WsMessage {
+public class FotoMessage {
 	public static final String SAVE = "SAVE";
 	public static final String GETLIST = "GETLIST";
 	public static final String GETBYID = "GETBYID";
@@ -11,9 +11,9 @@ public class WsMessage {
 	private Foto foto;
 	private String listado;
 	
-	public WsMessage() {}
+	public FotoMessage() {}
 	
-	public WsMessage(String type, String desc, Foto foto) {
+	public FotoMessage(String type, String desc, Foto foto) {
 		this.type = type;
 		this.desc = desc;
 		this.foto = foto;
@@ -46,7 +46,7 @@ public class WsMessage {
 
 	@Override
 	public String toString() {
-		return "WsMessage [type=" + type + ", desc=" + desc + ", foto=" + foto + ", listado=" + listado +"]";
+		return "FotoMessage [type=" + type + ", desc=" + desc + ", foto=" + foto + ", listado=" + listado +"]";
 	}
 	
 }
